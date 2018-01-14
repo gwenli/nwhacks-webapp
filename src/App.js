@@ -4,8 +4,10 @@ import './App.css';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
+import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import ActionDone from 'material-ui/svg-icons/action/done';
+import ActionFace from 'material-ui/svg-icons/action/face';
 import {withScriptjs,withGoogleMap,GoogleMap,Marker} from 'react-google-maps';
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
 import {compose, withProps,withHandlers} from 'recompose';
@@ -102,7 +104,7 @@ class App extends Component {
     }
 
     updateEntries() {
-        setInterval(() => this.fetchDB(), 3000);
+        setInterval(() => this.fetchDB(), 25000);
     }
 
     removeElement(id) {
@@ -156,72 +158,24 @@ class App extends Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <h1 className="App-title">Welcome</h1>
+                    <h1 className="App-title">Drop the HeartBeat</h1>
                 </header>
-                <p className="Queue-Title">
-                    Patient Queue:
-                </p>
+                <AppBar title="Patients"/>
+
                 <div>
                     <Divider />
                     <List>
                         {this.state.entries.map(this.renderListItem)}
-                    </List>
+                        </List>
                     <Divider />
                 </div>
-                <p className="HeatMap-Title">
-                    Patient Map:
-                </p>
-                <MapWithAMarkerClusterer entries = {this.state.entries}/>
+                <div>
+                    <AppBar title="Patient Map"/>
+                    <MapWithAMarkerClusterer entries = {this.state.entries}/>
+                </div>
             </div>
         )
     }
 }
-
-/*
-                <GoogleMapReact
-                    //apiKey={AIzaSyDxOPb3ygWrIu4XjuwQIAAm8oAWkl3RxT4} // set if you need stats etc ...
-                    bootstrapURLKeys={{libraries: 'visualization',}}
-                    defaultCenter={[49.280882, -123.117113]}
-                    defaultZoom={6}
-                    yesIWantToUseGoogleMapApiInternals={({map, maps}) => {
-                        //console.log(points[0]);
-                        const heatmap = new maps.visualization.HeatmapLayer({
-                            data : points.map(point => (
-                                {location : new maps.LatLng(points['location'][0], points['location'][1]),
-                                weight: points['weight']}))
-                        });
-                        heatmap.setMap(map);
-                    }}
-                    >
-            </GoogleMapReact>
-
-<MyMapComponent
-    isMarkerShown={false}
-    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"
-    loadingElement={<div style={{ height: `100%` }} />}
-    containerElement={<div style={{ height: `400px` }} />}
-    mapElement={<div style={{ height: `100%` }} />}
-/>*/
-/*  renderListItem(val, key) {
-    return <ListItem key={key} value={val} />
-  }
-
-  render() {
-    const stringList = [[1,3,4,5], [1,2,3,4], [1,2,3,4]];
-
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome</h1>
-      </header>
-        <p className="Queue-Title">
-          Patient Queue:
-        </p>
-        {stringList.map(this.renderListItem)}
-      </div>
-
-    );
-  }
-} */
 
 export default App;
