@@ -81,10 +81,10 @@ class App extends Component {
         this.setState({ entries: [] })
     }
 
-    componentDidMount() {
-        const url = 
+    fetchDB() {
+        const url =
             // Length issue
-           ' http://localhost:6001/api/UpdateQ'
+            'http://128.189.214.105:6001/api/UpdateQ'
         ;
 
         fetch(url)
@@ -95,13 +95,24 @@ class App extends Component {
             });
     }
 
+    componentDidMount() {
+        this.fetchDB();
+        this.updateEntries();
+    }
+
+    updateEntries() {
+        setInterval(()=>this.fetchDB(), 3000);
+    }
+
     removeElement(id) {
         const remainder = this.state.entries.filter(item => item.id !==id);
         this.setState({entries: remainder});
     }
 
     renderListItem(val, key) {
-        return <ListItem key={key} primaryText={"Id: " + val._id} secondaryText={"Heart Rate: " + val["HR (BPM)"] + " || Breathing Rate: " + val["BR (Breaths/min)"]+ " || Oxygen Saturation: " + val["O2SAT (%)"] + "%" + " || Location: " + "(" + val["Pos_X"] + "," + val["Pos_Y"] + ")"} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
+        const string = `Heart Rate: ` + val["HR (BPM)"] + ` || Breathing Rate: ` + val["BR (Breaths/min)"] + ` || Oxygen Saturation: `+ val["O2SAT (%)"] + `%` + ` || Location: (` + val["Pos_X"] + `,` + val["Pos_Y"] + `)`;
+        window.alert(string);
+        return <ListItem key={key} primaryText={"Id: " + val["_id"]} secondaryText={string} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
     }
 
     render() {
