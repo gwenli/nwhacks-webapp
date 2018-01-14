@@ -28,32 +28,34 @@ class App extends Component {
         super(props);
 
         this.state = {
-            entries: [{
-                id: 1,
-                hr: 60,
-                br: 14,
-                os: 98,
-                longitude: -123.117113,
-                latitude: 49.280882,
-            }, {
-                id: 2,
-                hr: 50,
-                br: 12,
-                os: 97,
-                longitude: -123.12,
-                latitude: 49.280882,
-            }, {
-                id: 3,
-                hr: 30,
-                br: 4,
-                os: 70,
-                longitude: -123.12,
-                latitude: 49.25,
-            }]
+            // entries: [{
+            //     id: 1,
+            //     hr: 60,
+            //     br: 14,
+            //     os: 98,
+            //     longitude: -123.117113,
+            //     latitude: 49.280882,
+            // }, {
+            //     id: 2,
+            //     hr: 50,
+            //     br: 12,
+            //     os: 97,
+            //     longitude: -123.12,
+            //     latitude: 49.280882,
+            // }, {
+            //     id: 3,
+            //     hr: 30,
+            //     br: 4,
+            //     os: 70,
+            //     longitude: -123.12,
+            //     latitude: 49.25,
+            // }]
+            // entries: []
         };
 
         this.removeElement = this.removeElement.bind(this);
         this.renderListItem = this.renderListItem.bind(this);
+        
     }
 
     static childContextTypes =
@@ -61,40 +63,45 @@ class App extends Component {
             muiTheme: PropTypes.object
         };
 
+    // getFromDatabase() {
+    //     fetch('http://localhost:6001/api/UpdateQ')
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         this.setState({ entries: data });
+    //     });
+    // }
     getChildContext()
     {
         return {
             muiTheme: getMuiTheme()
         }
     }
-/*
+
     componentWillMount() {
         this.setState({ entries: [] })
     }
-*/
-/*
+
     componentDidMount() {
-        const url = [
+        const url = 
             // Length issue
-            `https://gist.githubusercontent.com`,
-            `/farrrr/dfda7dd7fccfec5474d3`,
-            `/raw/758852bbc1979f6c4522ab4e92d1c92cba8fb0dc/data.json`
-        ].join("");
+           ' http://localhost:6001/api/UpdateQ'
+        ;
 
         fetch(url)
             .then(res => res.json())
             .then(data => {
-                this.setState({ entries: data.photos });
+                this.setState({ entries: data });
+                console.log(data);
             });
     }
-*/
+
     removeElement(id) {
         const remainder = this.state.entries.filter(item => item.id !==id);
         this.setState({entries: remainder});
     }
 
     renderListItem(val, key) {
-        return <ListItem key={key} primaryText={"Id: " + val.id} secondaryText={"Heart Rate: " + val.hr + " || Breathing Rate: " + val.br + " || Oxygen Saturation: " + val.os + "%" + " || Location: " + "(" + val.latitude + "," + val.longitude + ")"} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
+        return <ListItem key={key} primaryText={"Id: " + val._id} secondaryText={"Heart Rate: " + val["HR (BPM)"] + " || Breathing Rate: " + val["BR (Breaths/min)"]+ " || Oxygen Saturation: " + val["O2SAT (%)"] + "%" + " || Location: " + "(" + val["Pos_X"] + "," + val["Pos_Y"] + ")"} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
     }
 
     render() {
@@ -128,7 +135,7 @@ class App extends Component {
                     {props.entries.map(marker => (
                         <Marker
                             key={marker.id}
-                            position={{ lat: marker.latitude, lng: marker.longitude }}
+                            position={{ lat: marker.Pos_X, lng: marker.Pos_Y }}
                         />
                     ))}
                 </MarkerClusterer>
