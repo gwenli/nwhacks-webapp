@@ -28,6 +28,7 @@ class App extends Component {
         super(props);
 
         this.state = {
+            entries: []
             // entries: [{
             //     id: 1,
             //     hr: 60,
@@ -91,7 +92,7 @@ class App extends Component {
             .then(res => res.json())
             .then(data => {
                 this.setState({ entries: data });
-                console.log(data);
+                //console.log(data);
             });
     }
 
@@ -101,18 +102,18 @@ class App extends Component {
     }
 
     updateEntries() {
-        setInterval(()=>this.fetchDB(), 3000);
+        setInterval(() => this.fetchDB(), 3000);
     }
 
     removeElement(id) {
-        const remainder = this.state.entries.filter(item => item.id !==id);
+        const remainder = this.state.entries.filter(item => item["_id"] !==id);
         this.setState({entries: remainder});
     }
 
     renderListItem(val, key) {
         const string = `Heart Rate: ` + val["HR (BPM)"] + ` || Breathing Rate: ` + val["BR (Breaths/min)"] + ` || Oxygen Saturation: `+ val["O2SAT (%)"] + `%` + ` || Location: (` + val["Pos_X"] + `,` + val["Pos_Y"] + `)`;
-        window.alert(string);
-        return <ListItem key={key} primaryText={"Id: " + val["_id"]} secondaryText={string} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
+        //window.alert(string);
+        return <ListItem key={key} primaryText={"Id: " + val["_id"]} secondaryText={string} rightIconButton={<IconButton value={val["_id"]} onClick={() => this.removeElement(val["_id"])}> <ActionDone /> </IconButton>}/>
     }
 
     render() {
