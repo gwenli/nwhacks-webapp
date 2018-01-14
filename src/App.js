@@ -16,7 +16,7 @@ class App extends Component {
         this.state = {
             entries: [{
                 id: 1,
-                text: 'clean room'
+                text: 'whatever'
             }, {
                 id: 2,
                 text: 'wash the dishes'
@@ -27,6 +27,7 @@ class App extends Component {
         };
 
         this.removeElement = this.removeElement.bind(this);
+        this.renderListItem = this.renderListItem.bind(this);
     }
 
     static childContextTypes =
@@ -46,13 +47,13 @@ class App extends Component {
         </IconButton>
     );
 
-    removeElement(key) {
-        const remainder = this.state.entries.remove(key);
+    removeElement(id) {
+        const remainder = this.state.entries.filter(item => item.id !==id);
         this.setState({entries: remainder});
     }
 
     renderListItem(val, key) {
-        return <ListItem key={key} primaryText={val.text} rightIconButton={<ActionDone value={key} onClick={() => this.removeElement(key)}/>}/>
+        return <ListItem key={key} primaryText={val.text} rightIconButton={<IconButton value={val.id} onClick={() => this.removeElement(val.id)}> <ActionDone /> </IconButton>}/>
     }
 
     render() {
@@ -66,7 +67,8 @@ class App extends Component {
                 </p>
                 <div>
                     <List>
-                        {this.state.entries.map(this.renderListItem)}
+                        {
+                            this.state.entries.map(this.renderListItem)}
                     </List>
                 </div>
                 <p className="HeatMap-Title">
